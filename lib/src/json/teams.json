@@ -1,0 +1,62 @@
+[
+    {
+        "name": "ЯВМЕ",
+        "players": [
+            {
+                "name": "Илья",
+                "elo": 4500,
+                "pos": 1
+            },
+            {
+                "name": "Гоша",
+                "elo": 2500,
+                "pos": 2
+            },
+            {
+                "name": "Максим",
+                "elo": 1400,
+                "pos": 3
+            },
+            {
+                "name": "Артем",
+                "elo": 3000,
+                "pos": 4
+            },
+            {
+                "name": "Никита",
+                "elo": 1900,
+                "pos": 5
+            }
+        ]
+    },
+    {
+        "name": "Team Spirit",
+        "players": [
+            {
+                "name": "Yatoro",
+                "elo": 6500,
+                "pos": 1
+            },
+            {
+                "name": "Larl",
+                "elo": 6500,
+                "pos": 2
+            },
+            {
+                "name": "Collapse",
+                "elo": 6500,
+                "pos": 3
+            },
+            {
+                "name": "Mira",
+                "elo": 6500,
+                "pos": 4
+            },
+            {
+                "name": "Miposhka",
+                "elo": 6500,
+                "pos": 5
+            }
+        ]
+    }
+]
