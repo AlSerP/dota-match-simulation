@@ -2,7 +2,7 @@ module MatchSim
     module Utils
         module Generative
             module Teams
-                def get_main_teams()
+                def self.get_main_teams()
                     team1 = Team.new('ЯВМЕ', [Player.new('Илья', 1, 1250, [113]), Player.new('Гоша', 2, 1261, [13, 17, 106, 126]), Player.new('Максим', 3, 850, [19, 36]), Player.new('Артем', 4, 1025, [123, 97]), Player.new('Нихад', 5, 400)])
                     team2 = Team.new('Team Spirit', [Player.new('Yatoro', 1, 957, [12, 18, 109, 6]), Player.new('Larl', 2, 448, [106]), Player.new('Collapse', 3, 890, [16, 98, 97]), Player.new('Mira', 4, 551, [19, 20]), Player.new('Miposhka', 5, 2223, [3, 14])])
                     team3 = Team.new('BetBoom Team', [Player.new('Nightfall', 1, 1000), Player.new('gpk', 2, 1000), Player.new('Pure', 3, 1000), Player.new('Save', 4, 400), Player.new('TORONTOTOKYO', 5, 1000)])
@@ -16,7 +16,7 @@ module MatchSim
 
                     teams = [team1, team2, team3, team4, team5, team6, team7, team8, team9, team10]
 
-                    return teams
+                    teams
                 end
             end
         end

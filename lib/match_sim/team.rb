@@ -36,14 +36,14 @@ module MatchSim
             return "#{@name}(#{get_mean_elo})"
         end
         
-        def as_json(options={})
+        def to_h(options={})
             {
                 name: @name,
             }
         end
 
         def to_json(*options)
-            as_json(*options).to_json(*options)
+            to_h(*options).to_json(*options)
         end
     end
 end

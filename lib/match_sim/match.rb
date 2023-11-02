@@ -43,7 +43,7 @@ module MatchSim
                 sim_minute!(radiant, dire, minute, score)
             end
             if score[0] == 0 and score[1] == 0
-                return sim_match(@radiant, @dire)
+                return simulate(console)
             end
         
             score_c = (score[0] == 0 or score[1] == 0) ? 1 : score[1].to_f / score[0]
@@ -77,7 +77,7 @@ module MatchSim
                 print_report
             end
 
-            puts @report.to_json
+            # puts @report.to_json
             return @report
         end
 
