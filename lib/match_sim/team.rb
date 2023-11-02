@@ -13,7 +13,7 @@ module MatchSim
             return @players[pos - 1]
         end
 
-        def get_mean_elo
+        def mean_elo
             mean_elo = 0.0
             @players.each {|player| mean_elo += player.elo}
             mean_elo /= 5
@@ -33,7 +33,7 @@ module MatchSim
         end
     
         def to_s
-            return "#{@name}(#{get_mean_elo})"
+            return "#{@name}(#{mean_elo.round()})"
         end
         
         def to_h(options={})

@@ -65,8 +65,8 @@ module MatchSim
             end
         
             for i in 0..4 do
-                radiant[i].summarize(radiant_win, min_stat, max_stat, @dire.get_mean_elo)
-                dire[i].summarize(!radiant_win, min_stat, max_stat, @radiant.get_mean_elo)
+                radiant[i].summarize(radiant_win, min_stat, max_stat, @dire.mean_elo)
+                dire[i].summarize(!radiant_win, min_stat, max_stat, @radiant.mean_elo)
             end
             
             coefs = { result: result, match_coef: match_coef, score_coef: score_c, teams_coef: teams_c }

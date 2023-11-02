@@ -152,7 +152,7 @@ module MatchSim
 
         def as_json(options={})
             {
-                player: @player.as_json,
+                player: @player.name,
 
                 kills: @kills,
                 deaths: @deaths,
@@ -162,7 +162,7 @@ module MatchSim
                 gold: @gold.round(),
                 creeps: @creeps, 
 
-                elo: @elo_term
+                elo: @elo_term.round()
             }
         end
 

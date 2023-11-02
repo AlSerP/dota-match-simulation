@@ -15,7 +15,7 @@ module MatchSim
     end
 
     def to_s
-      "#{@team.to_s.ljust(40)} #{@matches.to_s.rjust(4)} #{@wins.to_s.rjust(4)} #{@score.to_s.rjust(4)}"
+      "#{@team.to_s.ljust(40)} #{@matches.to_s.rjust(4)} #{@wins.to_s.rjust(4)} #{@score.to_s.rjust(4)} #{(@wins.to_f/@matches * 100).round(1)}%"
     end
 
     def to_h
