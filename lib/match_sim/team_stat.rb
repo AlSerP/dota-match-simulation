@@ -1,6 +1,6 @@
 module MatchSim
   class TeamStat
-    attr_reader :team, :score
+    attr_reader :team, :score, :wins, :matches, :looses
 
     def initialize(team)
       @team = team
@@ -30,6 +30,10 @@ module MatchSim
 
     def to_json(*options)
       to_h.to_json(*options)
+    end
+
+    def winrate
+      @wins.to_f / @matches
     end
 
     private

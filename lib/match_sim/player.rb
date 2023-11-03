@@ -11,7 +11,8 @@ module MatchSim
         end
 
         def update_elo(elo_diff)
-            @elo += elo_diff
+            # @elo += elo_diff
+            @elo
         end
 
         def get_main_heroes
