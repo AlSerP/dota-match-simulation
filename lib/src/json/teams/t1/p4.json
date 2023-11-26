@@ -1,0 +1,10 @@
+{
+  "name": "Тестовая поддержка",
+  "elo": 1000,
+  "pos": 4,
+  "stats": {
+    "early_game": 0.33,
+    "late_game": 0.33,
+    "condition": 0.99
+  }
+}
