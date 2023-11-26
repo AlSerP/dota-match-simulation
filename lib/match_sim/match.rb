@@ -10,10 +10,16 @@ module MatchSim
 
         attr_reader :radiant, :dire
 
+        EARLY_STAGE = 15
+        MIDDLE_STAGE = 35
+        LATE_STAGE = 80
+
         def initialize(radiant, dire)
             @radiant = radiant
             @dire = dire
             @report = {}
+
+            @game_stage = nil
         end
         
         def calc_team_coefficient(team)
@@ -88,34 +94,34 @@ module MatchSim
 
         FIGHT_TYPE_PROB = {
             0 => {
-                15 => 0.2,
-                35 => 0.1,
-                80 => 0.05
+                EARLY_STAGE => 0.2,
+                MIDDLE_STAGE => 0.1,
+                LATE_STAGE => 0.05
             },
             1 => {
-                15 => 0.6,
-                35 => 0.2,
-                80 => 0.20
+                EARLY_STAGE => 0.6,
+                MIDDLE_STAGE => 0.2,
+                LATE_STAGE => 0.20
             },
             2 => {
-                15 => 0.8,
-                35 => 0.5,
-                80 => 0.4
+                EARLY_STAGE => 0.8,
+                MIDDLE_STAGE => 0.5,
+                LATE_STAGE => 0.4
             },
             3 => {
-                15 => 1.0,
-                35 => 0.7,
-                80 => 0.65
+                EARLY_STAGE => 1.0,
+                MIDDLE_STAGE => 0.7,
+                LATE_STAGE => 0.65
             },
             4 => {
-                15 => 1.0,
-                35 => 0.9,
-                80 => 0.75
+                EARLY_STAGE => 1.0,
+                MIDDLE_STAGE => 0.9,
+                LATE_STAGE => 0.75
             },
             5 => {
-                15 => 1.0,
-                35 => 1.0,
-                80 => 1.0
+                EARLY_STAGE => 1.0,
+                MIDDLE_STAGE => 1.0,
+                LATE_STAGE => 1.0
             }
         }
 
@@ -148,18 +154,18 @@ module MatchSim
             
             def get_fighters(radiant, dire, minute)
                 def decide_fight_type(minute)
-                    game_stage = 15
-                    if minute <= 15
-                        game_stage = 15
-                    elsif minute <= 35
-                        game_stage = 35
+                    @game_stage = EARLY_STAGE
+                    if minute <= EARLY_STAGE
+                        @game_stage = EARLY_STAGE
+                    elsif minute <= MIDDLE_STAGE
+                        @game_stage = MIDDLE_STAGE
                     else
-                        game_stage = 80
+                        @game_stage = LATE_STAGE
                     end
                 
                     res = RANDOM.rand(0..5)
                     for i in 0..5 do
-                        if res <= FIGHT_TYPE_PROB[i][game_stage]
+                        if res <= FIGHT_TYPE_PROB[i][@game_stage]
                             return i
                         end
                     end
@@ -197,7 +203,7 @@ module MatchSim
                 end
             end
         
-            def get_fighters_cief(radiant, dire, minute)
+            def get_fighters_coef(radiant, dire, minute)
                 fighters_r, fighters_d = get_fighters(radiant, dire, minute)
         
                 fighters_r_coef = []
@@ -218,10 +224,16 @@ module MatchSim
                     player1_winrate = get_winrates[player1.hero.to_s][player2.hero.to_s] ? get_winrates[player1.hero.to_s][player2.hero.to_s] + 0.5 : 1
                     player2_winrate = get_winrates[player2.hero.to_s][player1.hero.to_s] ? get_winrates[player2.hero.to_s][player1.hero.to_s] + 0.5 : 1
                     
-                    # Is it an signature hero
-                    player1_winrate *= 0.9 if not player1.get_main_heroes.include? player1.hero
-                    player2_winrate *= 0.9 if not player2.get_main_heroes.include? player2.hero
-                
+                    # Calc chance with current hero
+                    player1_winrate *= player1.hero_rate player1.hero ** 0.5 # TODO: Исправить коэффициент
+                    player2_winrate *= player2.hero_rate player2.hero ** 0.5
+
+                    player1_winrate *= player1.condition
+                    player2_winrate *= player2.condition
+                    
+                    player1_winrate *= player1.get_stage_coef(@game_stage)
+                    player2_winrate *= player2.get_stage_coef(@game_stage)
+
                     player1_custom_score = player1.get_pos_coef * player1_winrate
                     player2_custom_score = player2.get_pos_coef * player2_winrate
                 
@@ -258,7 +270,7 @@ module MatchSim
             end
 
             give_minute_gold(radiant, dire)
-            fighters_r_coef, fighters_d_coef = get_fighters_cief(radiant, dire, minute)
+            fighters_r_coef, fighters_d_coef = get_fighters_coef(radiant, dire, minute)
             res, dead = sim_fight(fighters_r_coef, fighters_d_coef)
             score[0] += res[0]
             score[1] += res[1]

@@ -36,6 +36,15 @@ module MatchSim
             @coef = player.elo.to_f / opponent_mean_elo * 0.5
             @elo_term = nil 
         end
+
+        def get_stage_coef(game_stage)
+            if game_stage <= 35
+                @player.early_game
+            else
+                @player.late_game
+            end
+        end
+
         def kill(target)
             @kills += 1
             target.die
@@ -43,18 +52,30 @@ module MatchSim
             give_gold(money_prize)
             return @kills
         end
-        def get_main_heroes
-            return @player.get_main_heroes
+
+        def main_heroes
+            @player.main_heroes
         end
+
+        def hero_rate(hero_id)
+            @player.hero_rate hero_id
+        end 
+
+        def condition
+            @player.condition
+        end
+
         def die
             @deaths += 1
             lost_gold = @gold * 0.02 
             remove_gold(lost_gold)
             return @deaths
         end
+
         def get_cost
             return 125 + (@gold * 0.08)
         end
+
         def assisted (target)
             @assists += 1
             if [4, 5].include? @pos
@@ -65,14 +86,17 @@ module MatchSim
             give_gold(money_prize) 
             return @assists
         end
+
         def give_gold(gold)
             @gold += gold
             return @gold
         end
+
         def remove_gold(gold)
             @gold += gold
             return @gold
         end
+
         def kill_creeps(num)
             @creeps += num
             sum_gold = num * CREEP_GOLD
@@ -80,6 +104,7 @@ module MatchSim
     
             return @creeps
         end
+
         def to_s
             "#{@player.name} | #{get_hero_name_by_id(@hero)}  #{@kills}/#{@deaths}/#{@assists} | CREEPS=#{@creeps}| #{@gold.round()}$"
         end
@@ -91,10 +116,11 @@ module MatchSim
         def pick(teammates_pick, opponent_pick, bans)
             best_hero = nil
             best_rate = -1.0
-            prefer_picks = @player.get_main_heroes.map(&:clone)
+            prefer_picks = @player.main_heroes.map(&:clone)
             prefer_picks.delete(prefer_picks.sample(prefer_picks.length / 2))  # Make some random shit
             prefer_picks.each do |player_hero|
                 # The hero can't be repeated
+                player_hero = player_hero.to_i
                 next if teammates_pick.include?(player_hero) or opponent_pick.include?(player_hero) or bans.include?(player_hero)
     
                 vs_mean_rate = 1.0
@@ -107,7 +133,7 @@ module MatchSim
                 end
             end
     
-            # Give a Random hero, if he wasn't taken
+            # Give a Random hero, if it wasn't taken
             if best_hero == nil
                 heroes = get_heroes().keys
                 best_hero = heroes.sample.to_i
@@ -119,9 +145,11 @@ module MatchSim
             teammates_pick.append(best_hero)
             return teammates_pick
         end
+
         def set_hero(hero)
             @hero = hero
         end
+
         def get_pos_coef
             return @coef * POS_COEF[@pos]
         end

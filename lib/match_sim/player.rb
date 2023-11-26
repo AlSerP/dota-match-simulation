@@ -1,25 +1,35 @@
 
 module MatchSim
     class Player
-        attr_reader :elo, :pos, :name
+        attr_reader :elo, :pos, :name, :condition, :early_game, :late_game
         
-        def initialize(name, pos, elo=1000, heroes=[])
-            @name = name
-            @elo = elo
-            @pos = pos
-            @heroes = heroes
+        # def initialize(name, pos, elo=1000, early_game=33, late_game=33, condition=50, heroes={})
+        def initialize(params={})
+            @name = params.fetch('name', 'NONE')
+            @elo = params.fetch('elo', 1000)
+            @pos = params['pos']
+
+            @early_game = params.fetch('early_game', 0.33)
+            @late_game = params.fetch('late_game', 0.33)
+            @condition = params.fetch('condition', 0.5)
+
+            @heroes = params.fetch('heroes', {})
         end
 
         def update_elo(elo_diff)
             @elo += elo_diff
         end
 
-        def get_main_heroes
-            return @heroes
+        def main_heroes
+            @heroes.keys
+        end
+
+        def hero_rate(hero_id)
+            @heroes[hero_id.to_s] || 0.33
         end
 
         def to_s
-            return "#{@name} (#{elo})"
+            "#{@name} (#{elo})"
         end
 
         def as_json(options={})

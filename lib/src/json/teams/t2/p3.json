@@ -1,0 +1,10 @@
+{
+  "name": "Тестовая тройка",
+  "elo": 1000,
+  "pos": 3,
+  "stats": {
+    "early_game": 0.33,
+    "late_game": 0.33,
+    "condition": 0.50
+  }
+}

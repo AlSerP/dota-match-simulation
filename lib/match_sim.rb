@@ -1,4 +1,6 @@
 require_relative 'match_sim/utils/generative/create_teams'
+require_relative 'match_sim/utils/generative/team'
+require_relative 'match_sim/utils/generative/player'
 
 require_relative 'match_sim/utils/math/normalization'
 require_relative 'match_sim/utils/math/difference'
