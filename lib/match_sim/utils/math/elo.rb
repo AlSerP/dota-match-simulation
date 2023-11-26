@@ -1,7 +1,7 @@
 module MatchSim
     module Utils
         module ELO
-            K = 35  # ELO multiplier
+            K = 52  # ELO multiplier
 
             def calc_elo(elo1, elo2, is_win)
                 ea = 1/(1 + 10 ** ((elo2-elo1)/400))

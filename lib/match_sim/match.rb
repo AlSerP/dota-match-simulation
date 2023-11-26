@@ -54,7 +54,11 @@ module MatchSim
         
             score_c = (score[0] == 0 or score[1] == 0) ? 1 : score[1].to_f / score[0]
             teams_c = dire_c / radiant_c
-            match_coef = score_c * teams_c * 0.5  # Probability of radiant win
+            # match_coef = score_c * teams_c * 0.5  # Probability of radiant win
+            match_coef = score_c * 0.5  # Probability of radiant win
+
+            puts "MATCH COEF #{match_coef}"
+
             radiant_win = true if result > match_coef
         
             # Elo results
@@ -83,7 +87,7 @@ module MatchSim
                 print_report
             end
 
-            puts @report.to_json
+            # puts @report.to_json
             return @report
         end
 
@@ -279,7 +283,6 @@ module MatchSim
         end
 
         def print_report
-            puts @report.keys
             p @report[:coefs]
             puts ("Radiant pick - #{@report[:picks][:radiant]} - #{id_to_names(@report[:picks][:radiant])}")
             puts ("Dire pick - #{@report[:picks][:dire]} - #{id_to_names(@report[:picks][:dire])}")

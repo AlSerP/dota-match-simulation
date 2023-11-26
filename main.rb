@@ -10,9 +10,19 @@ include MatchSim::Utils::Simulations
 # sim_match(teams[0], teams[1], true)
 
 
-t1 = MatchSim::Utils::Generative::Team.build('t1')
-t2 = MatchSim::Utils::Generative::Team.build('t2')
+teams = [
+  t1 = MatchSim::Utils::Generative::Team.build('t1'),
+  t2 = MatchSim::Utils::Generative::Team.build('t1'),
+  t3 = MatchSim::Utils::Generative::Team.build('t1'),
+  t4 = MatchSim::Utils::Generative::Team.build('t1'),
+  t5 = MatchSim::Utils::Generative::Team.build('t2'),
+  t6 = MatchSim::Utils::Generative::Team.build('t2'),
+  t7 = MatchSim::Utils::Generative::Team.build('t2'),
+  t8 = MatchSim::Utils::Generative::Team.build('t2')
+]
+
+puts sim_ligue(teams, 20)
 
 # puts MatchSim::Utils::Simulations.instance_methods.include? :sim_match
 # MatchSim::Utils::Simulations.sim_match(t1, t2, true)
-sim_match(t1, t2, true)
+# sim_match(t1, t2, true)

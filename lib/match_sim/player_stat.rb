@@ -13,6 +13,7 @@ module MatchSim
             5 => 0.8
         }
         CREEP_GOLD = 43
+        ELO_MULTIPLYER_COEF = 0.46
 
         attr_reader :coef, :player, :hero, :pos
 
@@ -106,7 +107,7 @@ module MatchSim
         end
 
         def to_s
-            "#{@player.name} | #{get_hero_name_by_id(@hero)}  #{@kills}/#{@deaths}/#{@assists} | CREEPS=#{@creeps}| #{@gold.round()}$"
+            "#{@player.name} (#{@player.elo}) | #{get_hero_name_by_id(@hero)}  #{@kills}/#{@deaths}/#{@assists} | CREEPS=#{@creeps}| #{@gold.round()}$"
         end
 
         def to_json(*options)
@@ -169,13 +170,15 @@ module MatchSim
         end
     
         def summarize(is_win, min_score, max_score, mean_opponent_elo)
-            if is_win
-                @elo_term = calc_elo(@player.elo, mean_opponent_elo, is_win) * (normalize(get_stat_coef, min_score, max_score) - 0.2)
-                @player.update_elo(@elo_term)
-            else
-                @elo_term = calc_elo(@player.elo, mean_opponent_elo, is_win) * (0.7 - normalize(get_stat_coef, min_score, max_score))
-                @player.update_elo(@elo_term)
-            end
+            base_elo = calc_elo(@player.elo, mean_opponent_elo, is_win)
+            game_stat_coef = normalize(get_stat_coef, min_score, max_score)
+            game_stat_elo_coef = game_stat_coef * ELO_MULTIPLYER_COEF - ELO_MULTIPLYER_COEF / 2
+
+            @elo_term = base_elo * (1 + game_stat_elo_coef * (is_win ? 1 : -1))
+
+            # puts "#{base_elo} - #{game_stat_coef} - #{game_stat_elo_coef} - #{@elo_term}"
+
+            @player.update_elo(@elo_term)
         end
 
         def as_json(options={})
