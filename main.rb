@@ -1,28 +1,54 @@
 require_relative 'lib/match_sim'
 
 include MatchSim::Utils::Simulations
-# extend MatchSim::Utils::Simulations
-# include MatchSim::Utils::Generative::Teams
 
-# teams = get_main_teams()
+# ----------- MASSIVE TEST
+stat = {}
+i = 10
 
-# puts sim_ligue(teams, 100)
-# sim_match(teams[0], teams[1], true)
+i.times do
+  teams = [
+    MatchSim::Utils::Generative::Team.build('t4'),
+    MatchSim::Utils::Generative::Team.build('t1'),
+    MatchSim::Utils::Generative::Team.build('t5'),
+    MatchSim::Utils::Generative::Team.build('t2'),
+    MatchSim::Utils::Generative::Team.build('t6'),
+    MatchSim::Utils::Generative::Team.build('t3'),
+  ]
 
+  league = MatchSim::League.new(teams, 10)
+  results = league.sim
 
-teams = [
-  t1 = MatchSim::Utils::Generative::Team.build('t1'),
-  t2 = MatchSim::Utils::Generative::Team.build('t1'),
-  t3 = MatchSim::Utils::Generative::Team.build('t1'),
-  t4 = MatchSim::Utils::Generative::Team.build('t1'),
-  t5 = MatchSim::Utils::Generative::Team.build('t2'),
-  t6 = MatchSim::Utils::Generative::Team.build('t2'),
-  t7 = MatchSim::Utils::Generative::Team.build('t2'),
-  t8 = MatchSim::Utils::Generative::Team.build('t2')
-]
+  results.stats.each do |team_stat|
+    stat[team_stat.team.name] = stat.fetch(team_stat.team.name, 0) + team_stat.wins.to_f / team_stat.matches
+  end
+end
 
-puts sim_ligue(teams, 20)
+stat.keys.each do |team|
+  puts "#{team} - #{stat[team] / i * 100}"
+end
+puts stat
 
-# puts MatchSim::Utils::Simulations.instance_methods.include? :sim_match
+# ----------- LEAGUE TEST
+
+# teams = [
+#   MatchSim::Utils::Generative::Team.build('t4'),
+#   MatchSim::Utils::Generative::Team.build('t1'),
+#   MatchSim::Utils::Generative::Team.build('t5'),
+#   MatchSim::Utils::Generative::Team.build('t2'),
+#   MatchSim::Utils::Generative::Team.build('t6'),
+#   MatchSim::Utils::Generative::Team.build('t3'),
+# ]
+
+# league = MatchSim::League.new(teams, 20)
+# results = league.sim
+
+# puts results
+
+# ----------- SINGLE TEST
+
+# t1 = MatchSim::Utils::Generative::Team.build('t1')
+# t2 = MatchSim::Utils::Generative::Team.build('t6')
+
 # MatchSim::Utils::Simulations.sim_match(t1, t2, true)
 # sim_match(t1, t2, true)

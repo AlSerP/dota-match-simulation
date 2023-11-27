@@ -1,10 +1,12 @@
 module MatchSim
-  require 'gruff'
+  # require 'gruff'
   require 'logger'
+
+  RANDOM = Random.new
 
   class League
     def initialize(teams, match_num = 1, name = 'League')
-      @teams = teams
+      @teams = teams.shuffle()
       @table = MatchSim::Table.new teams
       @match_num = match_num
       # @matches = []
@@ -40,9 +42,10 @@ module MatchSim
 
       @logger.info 'SIMULATION ENDED'
       @logger.warn "BAD MATCHES NUMBER: #{@bugs_counter}"
-      save_plots
+      # save_plots
 
-      to_s
+      # to_s
+      @table
     end
 
     def to_s
@@ -52,9 +55,10 @@ module MatchSim
     private
 
     def add_elo_data(team)
-      # @elo_data[team.name] = @elo_data.fetch(team.name, []).push team.mean_elo
-      stat = @table.find_stat team.name
-      @elo_data[team.name] = @elo_data.fetch(team.name, []).push(stat.score)
+      @elo_data[team.name] = @elo_data.fetch(team.name, []).push team.mean_elo
+      # stat = @table.find_stat team.name
+      # @elo_data[team.name] = @elo_data.fetch(team.name, []).push(stat.score)
+      # puts @elo_data
     end
 
     def get_closest_team(team)
@@ -91,6 +95,10 @@ module MatchSim
     end
 
     def sim_match(radiant, dire)
+      if RANDOM.rand >= 0.5
+        radiant, dire = dire, radiant
+      end
+
       match = MatchSim::Match.new radiant, dire
 
       results = match.simulate

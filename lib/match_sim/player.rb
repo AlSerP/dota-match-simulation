@@ -5,20 +5,22 @@ module MatchSim
         
         # def initialize(name, pos, elo=1000, early_game=33, late_game=33, condition=50, heroes={})
         def initialize(params={})
+            # puts params
             @name = params.fetch('name', 'NONE')
             @elo = params.fetch('elo', 1000)
             @pos = params['pos']
 
-            @early_game = params.fetch('early_game', 0.33)
-            @late_game = params.fetch('late_game', 0.33)
-            @condition = params.fetch('condition', 0.5)
+            stats = params.fetch('stats', {})
+            @early_game = stats.fetch('early_game', 0.33)
+            @late_game = stats.fetch('late_game', 0.33)
+            @condition = stats.fetch('condition', 0.5)
 
             @heroes = params.fetch('heroes', {})
         end
 
         def update_elo(elo_diff)
-            # @elo += elo_diff
-            @elo
+            @elo += elo_diff
+            # @elo
         end
 
         def main_heroes

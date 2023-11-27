@@ -1,5 +1,7 @@
 module MatchSim
   class Table
+    attr_reader :stats
+
     def initialize(teams)
       @stats = self.class.create_stats teams
     end

@@ -3,11 +3,8 @@
   "elo": 1000,
   "pos": 5,
   "stats": {
-    "early_game": 0.33,
-    "late_game": 0.33,
+    "early_game": 0.88,
+    "late_game": 0.88,
     "condition": 0.50
-  },
-  "heroes": {
-    "9": 0.99
   }
 }

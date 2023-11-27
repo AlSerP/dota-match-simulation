@@ -53,11 +53,9 @@ module MatchSim
             end
         
             score_c = (score[0] == 0 or score[1] == 0) ? 1 : score[1].to_f / score[0]
-            teams_c = dire_c / radiant_c
+            teams_c = dire_c / radiant_c # Unused
             # match_coef = score_c * teams_c * 0.5  # Probability of radiant win
             match_coef = score_c * 0.5  # Probability of radiant win
-
-            puts "MATCH COEF #{match_coef}"
 
             radiant_win = true if result > match_coef
         
@@ -229,19 +227,25 @@ module MatchSim
                     player2_winrate = get_winrates[player2.hero.to_s][player1.hero.to_s] ? get_winrates[player2.hero.to_s][player1.hero.to_s] + 0.5 : 1
                     
                     # Calc chance with current hero
-                    player1_winrate *= player1.hero_rate player1.hero ** 0.5 # TODO: Исправить коэффициент
-                    player2_winrate *= player2.hero_rate player2.hero ** 0.5
+                    player1_winrate *= player1.hero_rate player1.hero ** 2 # TODO: Исправить коэффициент
+                    player2_winrate *= player2.hero_rate player2.hero ** 2
 
                     player1_winrate *= player1.condition
                     player2_winrate *= player2.condition
                     
                     player1_winrate *= player1.get_stage_coef(@game_stage)
                     player2_winrate *= player2.get_stage_coef(@game_stage)
+                    
+                    # puts "COEFS = #{player1.get_stage_coef(@game_stage)}-#{player2.get_stage_coef(@game_stage)}"
 
                     player1_custom_score = player1.get_pos_coef * player1_winrate
                     player2_custom_score = player2.get_pos_coef * player2_winrate
-                
-                    player1_win = result > calc_difference(player1_custom_score, player2_custom_score)
+                    
+                    diff = calc_difference(player1_custom_score, player2_custom_score)
+                    player1_win = result >= diff
+
+                    # puts "P1-P2 = #{player1_custom_score}-#{player2_custom_score} === DIF = #{diff} === RES = #{result}  WIN-#{player1_win ? 1 : 2}"
+
                     return player1_win
                 end
                 score = [0, 0]

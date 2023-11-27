@@ -152,7 +152,8 @@ module MatchSim
         end
 
         def get_pos_coef
-            return @coef * POS_COEF[@pos]
+            # @coef * POS_COEF[@pos]
+            POS_COEF[@pos]
         end
     
         def get_stat_coef
